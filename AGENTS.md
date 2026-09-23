@@ -5,11 +5,11 @@
 ```bash
 git submodule update --init --recursive   # --recursive is required (PicoVectorscope has its own submodule)
 mkdir -p build && cd build
-cmake .. -DPICO_SDK_PATH=/path/to/pico-sdk   # PICO_SDK_PATH env var also works
+cmake ..          # no SDK args needed — see below
 make -j$(nproc)
 ```
 
-Or let CMake fetch the SDK: `cmake .. -DPICO_SDK_FETCH_FROM_GIT=ON`
+SDK discovery: if `PICO_SDK_PATH` is set (env var or `-D`), it's used; otherwise `PICO_SDK_FETCH_FROM_GIT=ON` is the default and the SDK is fetched from git. An explicit `PICO_SDK_FETCH_FROM_GIT=OFF` still works (and will fail without a location).
 
 - No test suite, no CI, no linter script — only compilation as verification (CMake `-Wall`).
 - The Pico SDK locate/fetch logic lives in `PicoVectorscope/pico_sdk_import.cmake` (submodule), included before `project()`.
